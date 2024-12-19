@@ -18,9 +18,11 @@ import styles from './SettingsShared.css';
 export default function ProfilerSettings(_: {}): React.Node {
   const {
     isCommitFilterEnabled,
-    minCommitDuration,
     setIsCommitFilterEnabled,
+    minCommitDuration,
     setMinCommitDuration,
+    isProfilerPanelHidden,
+    setIsProfilerPanelHidden
   } = useContext(ProfilerContext);
   const store = useContext(StoreContext);
 
@@ -65,6 +67,13 @@ export default function ProfilerSettings(_: {}): React.Node {
     },
     [setIsCommitFilterEnabled],
   );
+  const updateIsProfilerPanelHidden = useCallback(
+    (event: SyntheticEvent<HTMLInputElement>) => {
+      const checked = event.currentTarget.checked;
+      setIsProfilerPanelHidden(checked);
+    },
+    [setIsProfilerPanelHidden],
+  );
 
   const minCommitDurationInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -99,6 +108,16 @@ export default function ProfilerSettings(_: {}): React.Node {
         />{' '}
         (ms)
       </div>
+
+      <div className={styles.Setting}>
+        <label>
+          <input
+            checked={isProfilerPanelHidden}
+            onChange={updateIsProfilerPanelHidden}
+            type="checkbox"
+          />{' '}
+          Hide Profiler Panel
+        </label>
     </div>
   );
 }
